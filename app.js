@@ -1,18 +1,33 @@
-//App.js
+// app.js
 const express = require('express');
 const app = express();
-//Socket.io has to use the http server
-const server = require('http').Server(app);
+const http = require('http');
+const server = http.createServer(app);
+const { engine } = require('express-handlebars');
+const socketio = require('socket.io');
+const path = require('path');
+// Socket.io
+const { Server } = require('socket.io');
 
-//Express View Engine for Handlebars
-const exphbs  = require('express-handlebars');
-app.engine('handlebars', exphbs());
+const io = new Server(server);
+io.on('connection', (socket) => {
+  console.log('🔌 New user connected! 🔌');
+});
+
+// Handlebars
+app.engine('handlebars', engine({ defaultLayout: false }));
 app.set('view engine', 'handlebars');
+app.use('/public', express.static('public'))
+// app.set('views', path.join(__dirname, 'views'));
 
+// Static /public
+app.use('/public', express.static('public'));
+
+// Route
 app.get('/', (req, res) => {
   res.render('index.handlebars');
-})
->
-server.listen('3000', () => {
+});
+
+server.listen(3000, () => {
   console.log('Server listening on Port 3000');
-})
+});
