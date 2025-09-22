@@ -10,18 +10,27 @@ module.exports = (io, socket, onlineUsers, channels) => {
     
       //Listen for new messages
       socket.on('new message', (data) => {
-        // Send that data back to ALL clients
-        console.log(`🎤 ${data.sender}: ${data.message} 🎤`)
-        io.emit('new message', data);
-      })
+        //Save the new message to the channel.
+        channels[data.channel].push({sender : data.sender, message : data.message});
+        //Emit only to sockets that are in that channel room.
+        io.to(data.channel).emit('new message', data);
+      });
 
       socket.on('new channel', (newChannel) => {
         channels[newChannel] = [];
         socket.join(newChannel);
-        io.emit('new channel', newChannel)
+        io.emit('new channel', newChannel);
         socket.emit('user changed channel', {
             channel : newChannel,
             messages : channels[newChannel]
+        });
+      });
+
+      socket.on('user changed channel', (newChannel) => {
+        socket.join(newChannel);
+        socket.emit('user changed channel', {
+          channel : newChannel,
+          messages : channels[newChannel]
         });
       });
 
@@ -36,9 +45,6 @@ module.exports = (io, socket, onlineUsers, channels) => {
         io.emit('user has left', onlineUsers);
       });
 
-      socket.on('new channel', (newChannel) => {
-        console.log(newChannel);
-      });
 
 
 
