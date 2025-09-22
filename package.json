@@ -1,0 +1,26 @@
+{
+  "name": "make_chat",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/meganclapinski25/make_chat#readme",
+  "bugs": {
+    "url": "https://github.com/meganclapinski25/make_chat/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meganclapinski25/make_chat.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
+    "mongoose": "^8.18.1",
+    "socket.io": "^4.8.1"
+  }
+}
