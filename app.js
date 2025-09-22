@@ -10,9 +10,10 @@ const path = require('path');
 const { Server } = require('socket.io');
 
 const io = new Server(server);
+let onlineUsers = {};
 io.on('connection', (socket) => {
   console.log('🔌 New user connected! 🔌');
-  require('./sockets/chat.js')(io, socket);
+  require('./sockets/chat.js')(io, socket, onlineUsers);
 });
 
 // Handlebars
