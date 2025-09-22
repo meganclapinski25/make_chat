@@ -12,6 +12,7 @@ const { Server } = require('socket.io');
 const io = new Server(server);
 io.on('connection', (socket) => {
   console.log('🔌 New user connected! 🔌');
+  require('./sockets/chat.js')(io, socket);
 });
 
 // Handlebars
