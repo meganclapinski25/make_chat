@@ -88,6 +88,17 @@ $(document).ready(()=>{
     socket.on('new channel', (newChannel) => {
         $('.channels').append(`<div class="channel">${newChannel}</div>`);      });
 
+
+
+    socket.on('channel list', (names) => {
+          // append clickable channel items (skip General since you already show it)
+      (names || []).forEach((name) => {
+        if (name === 'General') return;
+        if ($(`.channels .channel:contains('${name}')`).length === 0) {
+            $('.channels').append(`<div class="channel">${name}</div>`);
+          }
+        });
+      });
     socket.on('user changed channel', (data) => {
         $('.channel-current').addClass('channel');
         $('.channel-current').removeClass('channel-current');

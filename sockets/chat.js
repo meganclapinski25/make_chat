@@ -1,6 +1,9 @@
 //chat.js
 module.exports = (io, socket, onlineUsers, channels) => {
     
+
+
+      socket.emit('channel list', Object.keys(channels));
       socket.on('new user', (username) => {
         onlineUsers[username] = socket.id;
         socket["username"] = username;
@@ -24,6 +27,10 @@ module.exports = (io, socket, onlineUsers, channels) => {
             channel : newChannel,
             messages : channels[newChannel]
         });
+      });
+
+      socket.on('get channels', () => {
+        socket.emit('channel list', Object.keys(channels));
       });
 
       socket.on('user changed channel', (newChannel) => {
